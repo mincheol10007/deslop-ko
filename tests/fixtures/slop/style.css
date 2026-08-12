@@ -1,0 +1,24 @@
+/*
+ * 정탐 픽스처 — 조판 규칙 네 개가 모두 걸려야 한다.
+ * word-break: keep-all 은 일부러 없다.
+ */
+
+body {
+  /* 한글 전용 폰트가 맨 앞 -> ko-font-order */
+  font-family: "Noto Sans KR", -apple-system, sans-serif;
+}
+
+/* 한글 + 굵음 + 큰 글씨 + 양수 자간 -> ko-letter-spacing */
+/* 좁은 행간 -> ko-line-height */
+.title {
+  font-size: clamp(38px, 7vw, 92px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+}
+
+/* BEM 수식자에만 자간이 있고 굵기는 부모 블록에 있다.
+   선언 블록 하나만 보는 스캐너는 이걸 못 잡는다. */
+.title--wide {
+  letter-spacing: 0.06em;
+}

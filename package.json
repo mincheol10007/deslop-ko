@@ -1,0 +1,30 @@
+{
+  "name": "deslop-ko",
+  "version": "0.1.0",
+  "description": "한국어 웹을 위한 AI 슬롭 검사기. 한글 조판과 한국어 카피를 본다. 의존성 없음, LLM 없이 동작.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "deslop-ko": "./scripts/scan.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/"
+  },
+  "files": [
+    "SKILL.md",
+    "NOTICE",
+    "scripts/",
+    "references/"
+  ],
+  "keywords": [
+    "ai-slop",
+    "korean",
+    "hangul",
+    "typography",
+    "claude-code",
+    "agent-skill"
+  ],
+  "engines": {
+    "node": ">=20"
+  }
+}

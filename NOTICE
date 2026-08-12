@@ -1,0 +1,51 @@
+deslop-ko
+Copyright 2026 mincheol10007
+
+This product includes software developed as an original work by the deslop-ko
+authors. Its detection rules are written from scratch; no rule text is copied
+from the projects listed below.
+
+The following projects were studied for their *mechanisms* (architecture,
+workflow, and reporting ideas). Ideas are not copyrightable, but attribution is
+given here because this project would not exist without them.
+
+--------------------------------------------------------------------------------
+kill-ai-slop — https://github.com/yetone/kill-ai-slop
+Copyright (c) yetone
+Licensed under the Apache License, Version 2.0
+
+  Mechanisms adopted: two-tier taxonomy structure (Classic / Evolved), the
+  standalone scanner architecture with a companion test file, the
+  ignore-comment escape hatch, per-locale rule file separation (rules.ru.mjs),
+  and the Scope -> Scan -> Triage -> Report -> Fix workflow.
+
+--------------------------------------------------------------------------------
+impeccable — https://github.com/pbakaus/impeccable
+Copyright (c) Paul Bakaus
+Licensed under the Apache License, Version 2.0
+
+  Mechanisms adopted: deterministic detection that runs without an LLM or API
+  key, edit-time provider hooks, project context files (PRODUCT.md / DESIGN.md),
+  a shared command vocabulary, and reason-carrying ignore directives.
+
+--------------------------------------------------------------------------------
+taste-skill — https://github.com/Leonxlnx/taste-skill
+Copyright (c) Leonxlnx
+Licensed under the MIT License
+
+  Mechanisms adopted: adjustable intensity dials instead of binary rules, and
+  brief inference before applying any rule.
+
+--------------------------------------------------------------------------------
+hallmark — https://github.com/Nutlope/hallmark
+Copyright (c) Hassan El Mghari
+Licensed under the MIT License
+
+  Mechanisms adopted: the `study` verb — repurposed here to extract an author's
+  writing voice rather than a site's visual DNA.
+
+--------------------------------------------------------------------------------
+
+The MIT-licensed works above are compatible with, and are redistributed under,
+the terms of the Apache License, Version 2.0 that governs this project. Their
+original copyright notices are retained above as required.
