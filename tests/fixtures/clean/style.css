@@ -45,3 +45,7 @@ body {
   font-size: 12px;
   line-height: 1.1;
 }
+
+/* 글자 분해 애니메이션이지만 어절 래퍼로 묶여 있다 — 해결된 상태다. */
+.char { display: inline-block; overflow: hidden; }
+.word { display: inline-block; white-space: nowrap; }

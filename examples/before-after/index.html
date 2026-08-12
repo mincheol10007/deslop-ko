@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>deslop-ko — 비포/애프터</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/*
+ * 이 페이지는 자기 원칙을 지킨다.
+ * 그라디언트 없음, 이모지 없음, 액센트 하나(교정용 빨강), 계층은 크기와 여백에서.
+ * word-break: keep-all 적용됨.
+ */
+:root {
+  --ink: #14110f;
+  --paper: #faf8f5;
+  --rule: #d8d2c8;
+  --mut: #6f6862;
+  --red: #b3261e;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Inter, "Noto Sans KR", sans-serif;
+  word-break: keep-all;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 940px; margin: 0 auto; padding: 72px 28px 120px; }
+
+header { border-bottom: 1px solid var(--ink); padding-bottom: 22px; margin-bottom: 8px; }
+h1 { font-size: 30px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.3; margin: 0 0 8px; }
+.sub { color: var(--mut); font-size: 15px; margin: 0; }
+.meta { font-size: 13px; color: var(--mut); margin-top: 26px; }
+.meta code { background: #efeae3; padding: 1px 5px; font-size: 12px; }
+
+section { margin-top: 68px; }
+.rule-id {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 12px; color: var(--red); letter-spacing: 0.04em;
+}
+h2 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.4; margin: 6px 0 6px; }
+.why { color: var(--mut); font-size: 14.5px; margin: 0 0 26px; max-width: 62ch; }
+
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.panel { background: var(--paper); padding: 22px 20px 26px; }
+.tag {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--mut); margin-bottom: 16px;
+}
+.panel--after .tag { color: var(--red); }
+.note {
+  font-size: 12.5px; color: var(--mut); margin-top: 16px;
+  border-top: 1px dotted var(--rule); padding-top: 10px;
+}
+.code { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; color: var(--mut); }
+.code b { color: var(--red); font-weight: 400; }
+
+/* 좁은 폭을 만들어 줄바꿈이 실제로 일어나게 한다 */
+.narrow { width: 188px; }
+
+/* ── 1. word-break ───────────────────────────────────────────── */
+.wb { font-size: 30px; font-weight: 900; line-height: 1.3; letter-spacing: -0.03em;
+      font-family: "Noto Sans KR", sans-serif; }
+.wb--before { word-break: normal; }
+.wb--after  { word-break: keep-all; }
+
+/* ── 2. line-height ──────────────────────────────────────────── */
+.lh { font-size: 34px; font-weight: 900; letter-spacing: -0.03em; width: 260px;
+      font-family: "Noto Sans KR", sans-serif; word-break: keep-all; }
+.lh--before { line-height: 1.1; }
+.lh--after  { line-height: 1.3; }
+.lh mark { background: rgba(179,38,30,0.13); color: inherit; }
+
+/* ── 3. font-order ───────────────────────────────────────────── */
+.fo { font-weight: 900; letter-spacing: -0.02em; line-height: 1.2; }
+.fo .num { font-size: 52px; display: block; }
+.fo .lbl { font-size: 14px; font-weight: 400; color: var(--mut); letter-spacing: 0; }
+.fo--before { font-family: "Noto Sans KR", -apple-system, sans-serif; }
+.fo--after  { font-family: Inter, "Noto Sans KR", sans-serif; }
+.fo--after .lbl { font-family: "Noto Sans KR", sans-serif; }
+
+footer { margin-top: 84px; border-top: 1px solid var(--ink); padding-top: 20px;
+         font-size: 13px; color: var(--mut); }
+footer a { color: var(--ink); }
+
+@media (max-width: 680px) {
+  .pair { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>deslop-ko — 비포/애프터</h1>
+  <p class="sub">지피터스 랜딩에서 검출된 한글 조판 3건. 기존 도구 두 개가 228건을 보고하는 동안 이 셋은 아무도 짚지 않았다.</p>
+</header>
+<p class="meta">
+  검사 <code>node scripts/scan.mjs ./gpters-landing</code> · 결과 3개 항목 5곳 ·
+  대상 <code>gpters-landing.vercel.app</code>
+</p>
+
+<section>
+  <p class="rule-id">ko-word-break · style.css</p>
+  <h2>어절 한가운데서 줄이 끊긴다</h2>
+  <p class="why">
+    브라우저는 한글을 글자 단위로 끊는다. <code class="code">word-break: keep-all</code> 이 없으면
+    "방법"이 "방 / 법"으로 갈라진다. 라틴 문자는 단어 단위로 끊기니 영어권 규칙에는 이 항목이 아예 없다.
+    좁은 화면에서 먼저 드러난다.
+  </p>
+  <div class="pair">
+    <div class="panel">
+      <p class="tag">비포</p>
+      <div class="narrow wb wb--before">AI를 배우는 가장 빠른 방법</div>
+      <p class="note code">word-break: <b>normal</b></p>
+    </div>
+    <div class="panel panel--after">
+      <p class="tag">애프터</p>
+      <div class="narrow wb wb--after">AI를 배우는 가장 빠른 방법</div>
+      <p class="note code">word-break: <b>keep-all</b></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="rule-id">ko-line-height · style.css:105, 175, 238</p>
+  <h2>받침이 윗줄에 닿는다</h2>
+  <p class="why">
+    한글은 받침 때문에 라틴보다 글자의 시각적 높이가 크다. <code class="code">line-height: 1.1</code> 은
+    라틴 헤드라인에서는 단단해 보이지만 한글에서는 위아래 줄이 서로를 민다.
+    아래에서 <mark>빠른</mark>의 받침과 윗줄을 보라.
+  </p>
+  <div class="pair">
+    <div class="panel">
+      <p class="tag">비포</p>
+      <div class="lh lh--before">AI를 배우는 가장 <mark>빠른</mark> 방법</div>
+      <p class="note code">line-height: <b>1.1</b></p>
+    </div>
+    <div class="panel panel--after">
+      <p class="tag">애프터</p>
+      <div class="lh lh--after">AI를 배우는 가장 <mark>빠른</mark> 방법</div>
+      <p class="note code">line-height: <b>1.3</b></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="rule-id">ko-font-order · style.css:35</p>
+  <h2>한글 폰트가 숫자까지 그린다</h2>
+  <p class="why">
+    <code class="code">font-family: "Noto Sans KR", -apple-system, sans-serif</code> 는 한글 폰트가 맨 앞이라
+    영문과 숫자도 이 폰트의 라틴 글리프로 렌더된다. 라틴 전용 폰트보다 자간이 성기고 형태가 무디다.
+    통계 숫자처럼 크게 쓰는 자리에서 특히 티가 난다.
+  </p>
+  <div class="pair">
+    <div class="panel">
+      <p class="tag">비포</p>
+      <div class="fo fo--before">
+        <span class="num">12,000+</span>
+        <span class="lbl">함께하는 멤버</span>
+      </div>
+      <p class="note code">"Noto Sans KR", -apple-system, sans-serif</p>
+    </div>
+    <div class="panel panel--after">
+      <p class="tag">애프터</p>
+      <div class="fo fo--after">
+        <span class="num">12,000+</span>
+        <span class="lbl">함께하는 멤버</span>
+      </div>
+      <p class="note code">Inter, "Noto Sans KR", sans-serif</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  deslop-ko · <a href="https://github.com/mincheol10007/deslop-ko">github.com/mincheol10007/deslop-ko</a> · Apache-2.0
+</footer>
+
+</div>
+</body>
+</html>

@@ -197,6 +197,53 @@ function koLetterSpacing(ctx) {
   return findings;
 }
 
-export const rules = [koWordBreak, koFontOrder, koLineHeight, koLetterSpacing];
+// ─────────────────────────────────────────────────────────────────────────────
+// T5 · 글자 분해 애니메이션이 word-break: keep-all 을 무력화한다
+//
+// 실측에서 나온 규칙이다. gpters-landing에 keep-all 을 제대로 넣었는데도 한글이
+// 여전히 어절 중간에서 끊겼다. computed style은 keep-all 이 맞았다. 원인은 JS였다 —
+// 글자 마스크 애니메이션이 각 글자를 inline-block span으로 쪼개면서 keep-all 이
+// 적용될 텍스트 노드가 남지 않았고, 브라우저는 박스 사이 아무 데서나 줄을 바꿨다.
+//
+// "CSS를 고쳤는데 안 고쳐지는" 경우라 이 규칙이 없으면 사용자가 원인을 못 찾는다.
+// ─────────────────────────────────────────────────────────────────────────────
+const SPLIT_SELECTOR = /(char|letter|glyph|grapheme|split)/i;
 
-export const RULE_IDS = ['ko-word-break', 'ko-font-order', 'ko-line-height', 'ko-letter-spacing'];
+function koSplitWordBreak(ctx) {
+  if (!isKoreanDocument(ctx.allVisibleText)) return [];
+
+  const splitter = ctx.cssRules.find(
+    (r) => SPLIT_SELECTOR.test(r.selector) && (r.decls['display'] || '').includes('inline-block')
+  );
+  if (!splitter) return [];
+
+  // 어절 래퍼가 이미 있으면 해결된 상태다.
+  // 두 속성이 같은 규칙에 있어야 한다 — 마퀴처럼 nowrap만 쓰는 곳과 구분해야 하기 때문이다.
+  const hasWordWrapper = ctx.cssRules.some(
+    (r) =>
+      (r.decls['white-space'] || '').includes('nowrap') &&
+      (r.decls['display'] || '').includes('inline-block')
+  );
+  if (hasWordWrapper) return [];
+
+  return [{
+    rule: 'ko-split-word-break',
+    axis: '한글 조판',
+    tier: 'evolved',
+    stage: 1,
+    title: '글자 분해 애니메이션이 어절 줄바꿈을 무너뜨립니다',
+    why: '글자를 낱개 inline-block으로 쪼개면 word-break: keep-all 이 적용될 텍스트 노드가 남지 않습니다. CSS를 제대로 넣어도 한글이 어절 한가운데서 끊깁니다. computed style은 정상으로 보이기 때문에 원인을 찾기 어렵습니다.',
+    fix: '분해한 글자를 어절 단위로 한 번 더 감싸고, 그 래퍼에 display: inline-block 과 white-space: nowrap 을 줍니다. 줄바꿈 기회는 어절 사이 공백에만 남깁니다.',
+    caveat: '한 줄로만 쓰이거나 줄바꿈이 없는 짧은 제목이면 문제되지 않습니다.',
+    detail: `display: inline-block`,
+    file: splitter.file,
+    line: splitter.line,
+    selector: splitter.selector,
+  }];
+}
+
+export const rules = [koWordBreak, koFontOrder, koLineHeight, koLetterSpacing, koSplitWordBreak];
+
+export const RULE_IDS = [
+  'ko-word-break', 'ko-font-order', 'ko-line-height', 'ko-letter-spacing', 'ko-split-word-break',
+];

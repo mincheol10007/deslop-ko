@@ -97,10 +97,17 @@ test('면제 주석은 사유를 함께 요구한다', () => {
 
 // ─── 정탐 ─────────────────────────────────────────────────────────────────────
 
-test('슬롭 픽스처에서 조판 규칙 네 개가 모두 걸린다', () => {
+test('슬롭 픽스처에서 조판 규칙 다섯 개가 모두 걸린다', () => {
   assert.deepEqual(ruleIds(scanFixture('slop')), [
-    'ko-font-order', 'ko-letter-spacing', 'ko-line-height', 'ko-word-break',
+    'ko-font-order', 'ko-letter-spacing', 'ko-line-height', 'ko-split-word-break', 'ko-word-break',
   ]);
+});
+
+test('글자 분해가 있어도 어절 래퍼로 묶여 있으면 지적하지 않는다', () => {
+  // gpters-landing 실측에서 나온 규칙이다. keep-all 을 제대로 넣었는데도 한글이
+  // 어절 중간에서 끊겼고, 원인은 JS가 글자를 낱개 inline-block으로 쪼갠 것이었다.
+  const findings = scanFixture('clean').filter((f) => f.rule === 'ko-split-word-break');
+  assert.equal(findings.length, 0);
 });
 
 test('BEM 수식자에만 자간이 있어도 부모 블록의 굵기와 합쳐서 판정한다', () => {

@@ -22,3 +22,6 @@ body {
 .title--wide {
   letter-spacing: 0.06em;
 }
+
+/* 글자 분해 애니메이션인데 어절 래퍼가 없다 -> ko-split-word-break */
+.char { display: inline-block; overflow: hidden; }
