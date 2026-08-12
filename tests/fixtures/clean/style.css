@@ -70,3 +70,12 @@ body {
   background-color: #ffffff;
   font-size: 15px;
 }
+
+/* 포커스 링 — 상태를 알리는 색이라 장식이 아니다. 접근성상 있어야 한다. */
+.button:focus-visible { box-shadow: 0 0 0 3px #8bd1fc; }
+
+/* 살짝 푸른 회색 그림자 — 실무에서 흔한 관행이지 글로우가 아니다. */
+.panel { box-shadow: 0 2px 28px rgba(68, 87, 101, 0.1); }
+
+/* 모달은 떠 있어야 하므로 그림자가 커도 된다. */
+.next-post-dialog { box-shadow: 0 4px 50px rgba(0, 0, 0, 0.15); }

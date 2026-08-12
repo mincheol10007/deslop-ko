@@ -17,6 +17,25 @@ import { maxPx, toWeight } from '../lib/parse.mjs';
 
 const AXIS = '시각 슬롭';
 
+/** 상태 표시용 선택자. 여기 붙은 색은 장식이 아니라 정보다. */
+const STATE_SELECTOR = /:(focus|focus-visible|focus-within|active|checked|invalid)\b|\.focus-visible/i;
+
+/** 화면을 덮는 레이어. 그림자가 커도 성립한다. */
+const OVERLAY_SELECTOR = /dialog|modal|overlay|popup|popover|drawer|sheet|tooltip|dropdown|lightbox/i;
+
+/**
+ * 눈에 띄게 색을 띠는가.
+ *
+ * 임계값을 16으로 잡았다가 오늘의집에서 rgba(68,87,101,.1) 같은 쿨그레이 그림자를
+ * 글로우로 지적했다. 실무에서 흔히 쓰는 살짝 푸른 회색이라 오탐이다.
+ * 파란 버튼 그림자 rgba(15,122,199,.26) 은 채널 차이가 184다 — 둘은 확실히 갈린다.
+ */
+const COLORFUL_MIN = 60;
+
+function isColorful({ r, g, b }) {
+  return Math.max(r, g, b) - Math.min(r, g, b) >= COLORFUL_MIN;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // V1 · 그라디언트로 채운 글자
 // ─────────────────────────────────────────────────────────────────────────────
@@ -53,11 +72,17 @@ function gradientText(ctx) {
 function glowShadow(ctx) {
   const findings = [];
   for (const rule of ctx.cssRules) {
+    // 포커스 링은 상태를 알리는 것이지 장식이 아니다. 접근성상 색이 있어야 한다.
+    if (STATE_SELECTOR.test(rule.selector)) continue;
+
     const raw = rule.decls['box-shadow'];
     if (!raw || raw === 'none') continue;
     const value = resolveVar(raw, ctx.vars);
 
-    const colored = extractColors(value).filter((c) => c.a > 0.05 && !isNeutral(c));
+    // 번짐 없이 퍼지기만 하는 그림자(0 0 0 3px)는 링이다.
+    if (maxShadowBlur(value) === 0) continue;
+
+    const colored = extractColors(value).filter((c) => c.a > 0.05 && isColorful(c));
     if (colored.length === 0) continue;
 
     findings.push({
@@ -108,6 +133,9 @@ export function maxShadowBlur(value) {
 function oversizedShadow(ctx) {
   const findings = [];
   for (const rule of ctx.cssRules) {
+    // 모달·툴팁처럼 떠 있는 레이어는 그림자가 커야 떠 보인다.
+    if (OVERLAY_SELECTOR.test(rule.selector) || STATE_SELECTOR.test(rule.selector)) continue;
+
     const raw = rule.decls['box-shadow'];
     if (!raw || raw === 'none') continue;
     const value = resolveVar(raw, ctx.vars);
@@ -222,6 +250,12 @@ function lowContrast(ctx) {
     const fgDecl = el.decls['color'];
     const bgDecl = el.decls['background-color'] || el.decls['background'];
     if (!fgDecl || !bgDecl) continue;
+
+    // 두 색이 같은 선언 블록에서 와야 한다.
+    // 선택자 매칭이 조상 조건을 무시하므로(.a .b 의 .a 를 안 봄) 서로 다른 블록에서
+    // 온 색을 짝지으면 실제로는 만나지 않는 조합이 나온다. 오늘의집에서 1.0:1 이
+    // 세 건 나왔는데 전부 그 탓이었다.
+    if (fgDecl.selector !== bgDecl.selector || fgDecl.line !== bgDecl.line) continue;
 
     const fg = parseColor(resolveVar(fgDecl.value, ctx.vars));
     const bgValue = resolveVar(bgDecl.value, ctx.vars);

@@ -64,6 +64,22 @@ test('소셜 로그인용임이 이름에 드러나면 브랜드 색 차용이 �
   assert.equal(has('clean', 'borrowed-brand-color'), false);
 });
 
+test('포커스 링의 색은 장식이 아니라 상태 표시다', () => {
+  // 오늘의집에서 .page.focus-visible:focus 의 `0 0 0 3px #8bd1fc` 를 글로우로 지적했다.
+  // caveat 문구로만 적어두고 코드로는 안 걸렀던 것이 원인이었다.
+  assert.equal(has('clean', 'glow-shadow'), false);
+});
+
+test('살짝 푸른 회색 그림자는 글로우가 아니다', () => {
+  // rgba(68,87,101,.1) 은 채널 차이가 33이라 임계값 16으로는 걸렸다.
+  // 파란 버튼 그림자 rgba(15,122,199,.26) 은 184다 — 60으로 올려 갈랐다.
+  assert.equal(has('clean', 'glow-shadow'), false);
+});
+
+test('모달은 그림자가 커도 떠 있어야 하므로 지적하지 않는다', () => {
+  assert.equal(has('clean', 'oversized-shadow'), false);
+});
+
 // ─── 정탐 ─────────────────────────────────────────────────────────────────────
 
 test('슬롭 픽스처에서 시각 규칙 여섯 개가 걸린다', () => {
