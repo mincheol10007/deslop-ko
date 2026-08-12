@@ -89,7 +89,7 @@ function koFontOrder(ctx) {
       stage: 1,
       title: '한글 전용 폰트가 스택 맨 앞이라 영문·숫자까지 그립니다',
       why: '한글용으로 설계된 폰트를 맨 앞에 두면 영문과 숫자도 그 폰트의 라틴 글리프로 렌더됩니다. 라틴 전용 폰트보다 자간과 형태가 거칠어서, 큰 숫자를 쓰는 통계 섹션에서 특히 티가 납니다.',
-      fix: '라틴 폰트를 앞에, 한글 폰트를 뒤에 둡니다. 또는 한글·라틴을 함께 설계한 Pretendard·SUIT 계열로 바꿉니다.',
+      fix: '한글·라틴을 함께 설계한 Pretendard·SUIT 계열로 바꾸는 것이 가장 깔끔합니다. 라틴 폰트를 앞에 세우는 방법도 있지만, 그 자리에 Inter나 Arial을 넣으면 이번에는 default-font 에 걸립니다. 두 규칙을 같이 보세요.',
       caveat: '한글만 나오는 페이지이거나 이 폰트의 라틴 글리프를 의도적으로 고른 것이면 정상입니다.',
       detail: value.length > 60 ? value.slice(0, 60) + '…' : value,
       file: rule.file,

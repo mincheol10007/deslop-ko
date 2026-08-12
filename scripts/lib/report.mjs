@@ -55,6 +55,7 @@ export function formatText(merged, meta) {
   if (skipped.markdown) {
     lines.push(`  · 마크다운 ${skipped.markdown}개는 이 스킬의 대상이 아님 (문서용 스킬이 따로 있음)`);
   }
+  for (const note of meta.notes || []) lines.push(`  · ${note}`);
 
   if (merged.length === 0) {
     lines.push('');

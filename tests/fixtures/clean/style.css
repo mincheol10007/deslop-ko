@@ -3,12 +3,20 @@
  * 한 줄이라도 지적되면 규칙이 틀린 것이다.
  */
 
+:root {
+  /* 소셜 로그인 버튼용이라 이름으로 용도가 드러난다 — 차용이 아니다. */
+  --kakao-yellow: #fee500;
+  --ink: #111318;
+  --paper: #ffffff;
+}
+
 body {
-  /* 라틴을 앞에, 한글을 뒤에. 정석. */
-  font-family: Inter, "Noto Sans KR", sans-serif;
-  /* 한국어 줄바꿈 처리가 되어 있다. */
+  /* 한글·라틴을 함께 설계한 서체. 폰트 순서 문제도 기본값 문제도 아니다. */
+  font-family: Pretendard, "Noto Sans KR", sans-serif;
   word-break: keep-all;
   line-height: 1.7;
+  color: var(--ink);
+  background-color: var(--paper);
 }
 
 /* 한글 굵은 제목에 음수 자간 — 국내 관행대로다. */
@@ -49,3 +57,16 @@ body {
 /* 글자 분해 애니메이션이지만 어절 래퍼로 묶여 있다 — 해결된 상태다. */
 .char { display: inline-block; overflow: hidden; }
 .word { display: inline-block; white-space: nowrap; }
+
+/* 무채색에 낮고 좁은 그림자 — 실제 그림자가 이렇게 생겼다. */
+.card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+}
+
+/* 대비가 충분하다. 21:1 */
+.notice {
+  color: #000000;
+  background-color: #ffffff;
+  font-size: 15px;
+}

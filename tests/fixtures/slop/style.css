@@ -1,7 +1,12 @@
 /*
- * 정탐 픽스처 — 조판 규칙 네 개가 모두 걸려야 한다.
+ * 정탐 픽스처 — 조판 5개와 시각 6개가 모두 걸려야 한다.
  * word-break: keep-all 은 일부러 없다.
  */
+
+:root {
+  /* 국내 플랫폼 브랜드 색을 우리 브랜드 토큰으로 썼다 -> borrowed-brand-color */
+  --brand: #03c75a;
+}
 
 body {
   /* 한글 전용 폰트가 맨 앞 -> ko-font-order */
@@ -25,3 +30,30 @@ body {
 
 /* 글자 분해 애니메이션인데 어절 래퍼가 없다 -> ko-split-word-break */
 .char { display: inline-block; overflow: hidden; }
+
+/* 글자를 그라디언트로 채웠다 -> gradient-text */
+.title--brand {
+  background: linear-gradient(120deg, #6366f1, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 색을 띤 그림자 + 요소보다 큰 번짐 -> glow-shadow, oversized-shadow */
+.card {
+  box-shadow: 0 20px 60px rgba(99, 102, 241, 0.35);
+  border-radius: 24px;
+}
+
+/* 반투명 유리 -> glassmorphism */
+.nav {
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(12px);
+}
+
+/* 대비 미달 -> low-contrast. 흰 글씨 on 오렌지 = 3.5:1 */
+.cta {
+  color: #ffffff;
+  background-color: #eb5a10;
+  font-size: 15px;
+}
